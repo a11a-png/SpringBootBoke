@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjg.vueboke.dao.SysSetLabelDao">
+  <resultMap id="BaseResultMap" type="com.wjg.vueboke.po.SysSetLabel">
+    <id column="wz_ID" jdbcType="INTEGER" property="wzId" />
+    <result column="bq_id" jdbcType="INTEGER" property="bqId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    wz_ID, bq_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_set_label
+    where wz_ID = #{wzId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_set_label
+    where wz_ID = #{wzId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="wz_ID" keyProperty="wzId" parameterType="com.wjg.vueboke.po.SysSetLabel" useGeneratedKeys="true">
+    insert into sys_set_label (bq_id)
+    values (#{bqId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="wz_ID" keyProperty="wzId" parameterType="com.wjg.vueboke.po.SysSetLabel" useGeneratedKeys="true">
+    insert into sys_set_label
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bqId != null">
+        bq_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bqId != null">
+        #{bqId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wjg.vueboke.po.SysSetLabel">
+    update sys_set_label
+    <set>
+      <if test="bqId != null">
+        bq_id = #{bqId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where wz_ID = #{wzId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wjg.vueboke.po.SysSetLabel">
+    update sys_set_label
+    set bq_id = #{bqId,jdbcType=INTEGER}
+    where wz_ID = #{wzId,jdbcType=INTEGER}
+  </update>
+</mapper>

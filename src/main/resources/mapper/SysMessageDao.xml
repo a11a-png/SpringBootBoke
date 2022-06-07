@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjg.vueboke.dao.SysMessageDao">
+  <resultMap id="BaseResultMap" type="com.wjg.vueboke.po.SysMessage">
+    <id column="message_id" jdbcType="INTEGER" property="messageId" />
+    <result column="fromUserId" jdbcType="INTEGER" property="fromuserid" />
+    <result column="toUserId" jdbcType="INTEGER" property="touserid" />
+    <result column="potsId" jdbcType="INTEGER" property="potsid" />
+    <result column="commentId" jdbcType="INTEGER" property="commentid" />
+    <result column="message" jdbcType="VARCHAR" property="message" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="fromName" jdbcType="VARCHAR" property="fromName" />
+    <result column="toName" jdbcType="VARCHAR" property="toName" />
+    <result column="articles_title" jdbcType="TINYINT" property="articlesTitle" />
+    <result column="mess_date" jdbcType="TIMESTAMP" property="messDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    message_id, fromUserId, toUserId, potsId, commentId, message, `type`, `status`,mess_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_message
+    where message_id = #{messageId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_message
+    where message_id = #{messageId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="message_id" keyProperty="messageId" parameterType="com.wjg.vueboke.po.SysMessage" useGeneratedKeys="true">
+    insert into sys_message
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fromuserid != null">
+        fromUserId,
+      </if>
+      <if test="touserid != null">
+        toUserId,
+      </if>
+      <if test="potsid != null">
+        potsId,
+      </if>
+      <if test="commentid != null">
+        commentId,
+      </if>
+      <if test="message != null">
+        message,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="messDate != null">
+        mess_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fromuserid != null">
+        #{fromuserid,jdbcType=INTEGER},
+      </if>
+      <if test="touserid != null">
+        #{touserid,jdbcType=INTEGER},
+      </if>
+      <if test="potsid != null">
+        #{potsid,jdbcType=INTEGER},
+      </if>
+      <if test="commentid != null">
+        #{commentid,jdbcType=INTEGER},
+      </if>
+      <if test="message != null">
+        #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="messDate != null">
+        #{messDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wjg.vueboke.po.SysMessage">
+    update sys_message
+    <set>
+      <if test="fromuserid != null">
+        fromUserId = #{fromuserid,jdbcType=INTEGER},
+      </if>
+      <if test="touserid != null">
+        toUserId = #{touserid,jdbcType=INTEGER},
+      </if>
+      <if test="potsid != null">
+        potsId = #{potsid,jdbcType=INTEGER},
+      </if>
+      <if test="commentid != null">
+        commentId = #{commentid,jdbcType=INTEGER},
+      </if>
+      <if test="message != null">
+        message = #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+    </set>
+    where message_id = #{messageId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wjg.vueboke.po.SysMessage">
+    update sys_message
+    set fromUserId = #{fromuserid,jdbcType=INTEGER},
+      toUserId = #{touserid,jdbcType=INTEGER},
+      potsId = #{potsid,jdbcType=INTEGER},
+      commentId = #{commentid,jdbcType=INTEGER},
+      message = #{message,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=TINYINT},
+      `status` = #{status,jdbcType=TINYINT}
+    where message_id = #{messageId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    SELECT sys_message.message_id, sys_message.mess_date,sys_message.fromUserId, sys_message.toUserId, sys_message.potsId, sys_message.commentId, sys_message.message, sys_message.`type`, sys_message.`status` ,a1.`user_name` AS 'fromName',a2.`user_name` AS 'toName',sys_articles.`articles_title`
+    FROM sys_message INNER JOIN sys_customer AS a1 ON sys_message.`fromUserId`=a1.`userID`
+    INNER JOIN sys_customer AS a2 ON sys_message.`toUserId`=a2.`userID`
+    INNER JOIN sys_articles ON sys_message.`potsId`=sys_articles.`articles_id`
+    INNER JOIN sys_customer ON sys_articles.`user_id` = sys_customer.`userID`
+    WHERE sys_customer.`userID`=#{userID}
+    ORDER BY sys_message.`mess_date` DESC
+    LIMIT #{curr},#{page}
+  </select>
+
+  <select id="selectTomess" resultMap="BaseResultMap">
+    SELECT sys_message.message_id, sys_message.mess_date,sys_message.fromUserId, sys_message.toUserId, sys_message.potsId, sys_message.commentId, sys_message.message, sys_message.`type`, sys_message.`status` ,a1.`user_name` AS 'fromName',a2.`user_name` AS 'toName',sys_articles.`articles_title`
+    FROM sys_message INNER JOIN sys_customer AS a1 ON sys_message.`fromUserId`=a1.`userID`
+                     INNER JOIN sys_customer AS a2 ON sys_message.`toUserId`=a2.`userID`
+                     LEFT JOIN sys_articles ON sys_message.`potsId`=sys_articles.`articles_id`
+                     LEFT JOIN sys_customer ON sys_articles.`user_id` = sys_customer.`userID`
+    WHERE sys_message.toUserId=#{toUserId}
+    ORDER BY sys_message.`mess_date` DESC
+      LIMIT #{curr},#{page}
+  </select>
+
+  <select id="selectWD" resultType="java.lang.Integer">
+    SELECT COUNT(sys_message.`message_id`)
+    FROM sys_message
+    WHERE sys_message.`toUserId`=#{userid} AND sys_message.`status`=1
+  </select>
+
+  <select id="selectCount" resultType="java.lang.Integer">
+    SELECT COUNT(sys_message.`message_id`)
+    FROM sys_message
+    WHERE sys_message.`toUserId`=#{userid}
+  </select>
+
+   <!--  设置已读状态 -->
+  <update id="updateYD">
+    UPDATE sys_message
+    SET sys_message.`status`=0
+    WHERE sys_message.`toUserId`=#{userid}
+  </update>
+
+</mapper>

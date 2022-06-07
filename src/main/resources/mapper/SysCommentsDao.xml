@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjg.vueboke.dao.SysCommentsDao">
+  <resultMap id="BaseResultMap" type="com.wjg.vueboke.po.SysComments">
+    <id column="comment_id" jdbcType="INTEGER" property="commentId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="article_ID" jdbcType="BIGINT" property="articleId" />
+    <result column="like_count" jdbcType="BIGINT" property="likeCount" />
+    <result column="comment_date" jdbcType="TIMESTAMP" property="commentDate" />
+    <result column="comment_content" jdbcType="VARCHAR" property="commentContent" />
+    <result column="parent_comment_id" jdbcType="INTEGER" property="parentCommentId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="touser_name" jdbcType="VARCHAR" property="toUserName" />
+    <result column="user_photo" jdbcType="VARCHAR" property="userPhoto" />
+    <result column="touser_id" jdbcType="VARCHAR" property="toUserId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    sys_comments.comment_id, sys_comments.touser_id, sys_comments.user_id, sys_comments.article_ID, sys_comments.like_count, sys_comments.comment_date, sys_comments.comment_content, sys_comments.parent_comment_id, sys_customer.user_name,sys_customer.user_photo
+  </sql>
+
+  <select id="select" resultMap="BaseResultMap">
+    SELECT article_ID,comment_date
+    FROM sys_comments
+    ORDER BY comment_date DESC
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    SELECT sys_comments.comment_id, sys_comments.touser_id, sys_comments.user_id, sys_comments.article_ID, sys_comments.like_count, sys_comments.comment_date, sys_comments.comment_content, sys_comments.parent_comment_id,t1.user_photo,
+           t1.user_name AS 'user_name',t2.user_name AS 'touser_name'
+    FROM sys_comments INNER JOIN sys_customer AS t1 ON sys_comments.user_id=t1.userID
+                      INNER JOIN sys_customer AS t2 ON sys_comments.touser_id=t2.userID
+    where sys_comments.article_ID = #{articleId} and sys_comments.parent_comment_id=0
+    ORDER BY sys_comments.`comment_date` DESC
+    LIMIT #{curr},#{page}
+  </select>
+  <select id="selectCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select COUNT(sys_comments.comment_id)
+    FROM sys_comments
+    WHERE sys_comments.article_ID=#{articleId} and sys_comments.parent_comment_id=0
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_comments
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="comment_id" keyProperty="commentId" parameterType="com.wjg.vueboke.po.SysComments" useGeneratedKeys="true">
+    insert into sys_comments
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="articleId != null">
+        article_ID,
+      </if>
+      <if test="likeCount != null">
+        like_count,
+      </if>
+      <if test="commentDate != null">
+        comment_date,
+      </if>
+      <if test="commentContent != null">
+        comment_content,
+      </if>
+      <if test="parentCommentId != null">
+        parent_comment_id,
+      </if>
+      <if test="toUserId != null">
+        touser_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="articleId != null">
+        #{articleId,jdbcType=BIGINT},
+      </if>
+      <if test="likeCount != null">
+        #{likeCount,jdbcType=BIGINT},
+      </if>
+      <if test="commentDate != null">
+        #{commentDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commentContent != null">
+        #{commentContent,jdbcType=VARCHAR},
+      </if>
+      <if test="parentCommentId != null">
+        #{parentCommentId,jdbcType=INTEGER},
+      </if>
+      <if test="toUserId != null">
+        #{toUserId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wjg.vueboke.po.SysComments">
+    update sys_comments
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="articleId != null">
+        article_ID = #{articleId,jdbcType=BIGINT},
+      </if>
+      <if test="likeCount != null">
+        like_count = #{likeCount,jdbcType=BIGINT},
+      </if>
+      <if test="commentDate != null">
+        comment_date = #{commentDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commentContent != null">
+        comment_content = #{commentContent,jdbcType=VARCHAR},
+      </if>
+      <if test="parentCommentId != null">
+        parent_comment_id = #{parentCommentId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wjg.vueboke.po.SysComments">
+    update sys_comments
+    set user_id = #{userId,jdbcType=BIGINT},
+      article_ID = #{articleId,jdbcType=BIGINT},
+      like_count = #{likeCount,jdbcType=BIGINT},
+      comment_date = #{commentDate,jdbcType=TIMESTAMP},
+      comment_content = #{commentContent,jdbcType=VARCHAR},
+      parent_comment_id = #{parentCommentId,jdbcType=INTEGER}
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectBydate" resultMap="BaseResultMap">
+    SELECT sys_comments.*
+    FROM sys_comments
+    <where>
+        <if test="startDate!=null">
+          comment_date &gt; #{startDate} and
+        </if>
+        <if test="enddate!=null">
+          comment_date &lt;= #{enddate}
+        </if>
+    </where>
+  </select>
+  <select id="selectChild" resultMap="BaseResultMap">
+    SELECT sys_comments.comment_id, sys_comments.touser_id, sys_comments.user_id, sys_comments.article_ID, sys_comments.like_count, sys_comments.comment_date, sys_comments.comment_content, sys_comments.parent_comment_id,t1.user_photo,
+           t1.user_name AS 'user_name',t2.user_name AS 'touser_name'
+    FROM sys_comments INNER JOIN sys_customer AS t1 ON sys_comments.user_id=t1.userID
+                      INNER JOIN sys_customer AS t2 ON sys_comments.touser_id=t2.userID
+    where sys_comments.parent_comment_id = #{commentId}
+    ORDER BY sys_comments.`comment_date`
+  </select>
+
+</mapper>

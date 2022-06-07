@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjg.vueboke.dao.SysTokenDao">
+  <resultMap id="BaseResultMap" type="com.wjg.vueboke.po.SysToken">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="token" jdbcType="VARCHAR" property="token" />
+    <result column="expire_time" jdbcType="TIMESTAMP" property="expireTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id,expire_time,token,update_time
+  </sql>
+  <insert id="save" parameterType="com.wjg.vueboke.po.SysToken">
+      insert into sys_token
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="token != null">
+        token,
+      </if>
+      <if test="expireTime != null">
+        expire_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id},
+      </if>
+      <if test="token != null">
+        #{token},
+      </if>
+      <if test="expireTime != null">
+        #{expireTime},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime},
+      </if>
+    </trim>
+
+  </insert>
+  <update id="update" parameterType="com.wjg.vueboke.po.SysToken">
+    update sys_token
+    <set>
+      <if test="token != null">
+        token = #{token},
+      </if>
+      <if test="expireTime != null">
+        expire_time = #{expireTime},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+
+  <select id="selectByToken" resultMap="BaseResultMap" parameterType="java.lang.String">
+      select
+      <include refid="Base_Column_List" />
+      from sys_token
+      where token=#{token}
+  </select>
+
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List" />
+    from sys_token
+    where id=#{userid}
+  </select>
+
+</mapper>

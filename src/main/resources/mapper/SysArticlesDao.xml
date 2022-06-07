@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjg.vueboke.dao.SysArticlesDao">
+  <resultMap id="BaseResultMap" type="com.wjg.vueboke.po.SysArticles">
+    <id column="articles_id" jdbcType="INTEGER" property="articlesId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="articles_title" jdbcType="VARCHAR" property="articlesTitle" />
+    <result column="articles_content" jdbcType="VARCHAR" property="articlesContent" />
+    <result column="articles_views" jdbcType="INTEGER" property="articlesViews" />
+    <result column="articles_count" jdbcType="INTEGER" property="articlesCount" />
+    <result column="articles_date" jdbcType="TIMESTAMP" property="articlesDate" />
+    <result column="like_count" jdbcType="INTEGER" property="likeCount" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="articles_cover" jdbcType="VARCHAR" property="articlesCover" />
+    <result column="sort_name" jdbcType="VARCHAR" property="sortName" />
+    <result column="sort_id" jdbcType="INTEGER" property="sortId" />
+    <result column="collect_count" jdbcType="INTEGER" property="collectCount" />
+    <result column="like_userId" jdbcType="INTEGER" property="likeUserId" />
+    <result column="collect_userId" jdbcType="INTEGER" property="collectUserId" />
+    <result column="technology_id" jdbcType="INTEGER" property="technologyId" />
+    <result column="technology" jdbcType="VARCHAR" property="technology" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    articles_id, user_id, articles_title, articles_content, articles_views, articles_count, 
+    articles_date, like_count,sort_id, articles_cover,collect_count,like_userId,collect_userId,technology_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT sys_articles.user_id,sys_articles.articles_id,sys_articles.articles_cover,sys_articles.articles_title,sys_articles.articles_content,sys_articles.articles_views,sys_articles.articles_count,sys_articles.articles_date,sys_articles.like_count,sys_customer.user_name,sys_sort.sort_name,sys_articles.like_userId,sys_articles.collect_userId,sys_articles.like_userId,sys_articles.collect_userId,sys_articles.collect_count,sys_technology.technology,sys_articles.technology_id
+    FROM sys_articles INNER JOIN sys_customer ON sys_articles.user_id = sys_customer.userID
+                      INNER JOIN sys_sort ON sys_articles.`sort_id` = sys_sort.`sort_id`
+                      INNER JOIN sys_technology ON sys_technology.`id`=sys_articles.`technology_id`
+    where articles_id = #{articlesId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_articles
+    where articles_id = #{articlesId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" keyColumn="articles_id" keyProperty="articlesId" parameterType="com.wjg.vueboke.po.SysArticles" useGeneratedKeys="true">
+    insert into sys_articles
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="articlesTitle != null">
+        articles_title,
+      </if>
+      <if test="articlesContent != null">
+        articles_content,
+      </if>
+      <if test="articlesViews != null">
+        articles_views,
+      </if>
+      <if test="articlesCount != null">
+        articles_count,
+      </if>
+      <if test="articlesDate != null">
+        articles_date,
+      </if>
+      <if test="likeCount != null">
+        like_count,
+      </if>
+      <if test="articlesCover != null">
+        articles_cover,
+      </if>
+      <if test="sortId != null">
+        sort_id,
+      </if>
+      <if test="collectCount != null">
+        collect_count,
+      </if>
+      <if test="likeUserId != null">
+        like_userId,
+      </if>
+      <if test="collectUserId != null">
+        collect_userId,
+      </if>
+      <if test="technologyId != null">
+        technology_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="articlesTitle != null">
+        #{articlesTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="articlesContent != null">
+        #{articlesContent,jdbcType=VARCHAR},
+      </if>
+      <if test="articlesViews != null">
+        #{articlesViews,jdbcType=INTEGER},
+      </if>
+      <if test="articlesCount != null">
+        #{articlesCount,jdbcType=INTEGER},
+      </if>
+      <if test="articlesDate != null">
+        #{articlesDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="likeCount != null">
+        #{likeCount,jdbcType=INTEGER},
+      </if>
+      <if test="articlesCover != null">
+        #{articlesCover},
+      </if>
+      <if test="sortId != null">
+        #{sortId},
+      </if>
+      <if test="collectCount != null">
+        #{collectCount},
+      </if>
+      <if test="likeUserId != null">
+        #{likeUserId},
+      </if>
+      <if test="collectUserId != null">
+        #{collectUserId},
+      </if>
+      <if test="technologyId != null">
+        #{technologyId},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="update" parameterType="com.wjg.vueboke.po.SysArticles">
+    update sys_articles
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="articlesTitle != null">
+        articles_title = #{articlesTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="articlesContent != null">
+        articles_content = #{articlesContent,jdbcType=VARCHAR},
+      </if>
+      <if test="articlesViews != null">
+        articles_views = #{articlesViews,jdbcType=INTEGER},
+      </if>
+      <if test="articlesCount != null">
+        articles_count = #{articlesCount,jdbcType=INTEGER},
+      </if>
+      <if test="articlesDate != null">
+        articles_date = #{articlesDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="likeCount != null">
+        like_count = #{likeCount,jdbcType=INTEGER},
+      </if>
+      <if test="collectCount != null">
+        collect_count=#{collectCount},
+      </if>
+      <if test="technologyId != null">
+        technology_id=#{technologyId},
+      </if>
+    </set>
+    where articles_id = #{articlesId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    SELECT sys_articles.user_id,sys_articles.articles_id,sys_articles.articles_cover,sys_articles.articles_title,sys_articles.articles_content,sys_articles.articles_views,sys_articles.articles_count,sys_articles.articles_date,sys_articles.like_count,sys_customer.user_name,sys_sort.sort_name,sys_articles.like_userId,sys_articles.collect_userId,sys_articles.like_userId,sys_articles.collect_userId,sys_articles.collect_count,sys_technology.technology,sys_articles.technology_id
+    FROM sys_articles INNER JOIN sys_customer ON sys_articles.user_id = sys_customer.userID
+    INNER JOIN sys_sort ON sys_articles.`sort_id` = sys_sort.`sort_id`
+    INNER JOIN sys_technology ON sys_technology.`id`=sys_articles.`technology_id`
+    <if test="sort_id!=null">
+      where sys_articles.`sort_id` = #{sort_id}
+    </if>
+    <if test="user_id!=null">
+      where sys_articles.`user_id` = #{user_id}
+    </if>
+    <if test="technologyId!=null">
+      where sys_articles.technology_id = #{technologyId}
+    </if>
+    ORDER BY sys_articles.articles_id
+    <if test="lit!=null">
+      LIMIT #{lit},#{page}
+    </if>
+</select>
+
+  <select id="selectCount" parameterType="java.lang.Integer" resultType="Integer">
+  SELECT COUNT(sys_articles.articles_id)
+  FROM sys_articles
+  <if test="sortId!=null">
+    where sys_articles.`sort_id` = #{sortId}
+  </if>
+  <if test="user_id!=null">
+    where sys_articles.`user_id` = #{user_id}
+  </if>
+  <if test="technology_id!=null">
+    where sys_articles.`technology_id` = #{technology_id}
+  </if>
+</select>
+
+  <select id="selectWz" resultMap="BaseResultMap">
+    SELECT sys_articles.articles_id, sys_articles.user_id, sys_articles.articles_title, sys_articles.articles_content, sys_articles.articles_views, sys_articles.articles_count,
+           sys_articles.articles_date, sys_articles.like_count,sys_articles.sort_id, sys_articles.articles_cover,sys_customer.user_name,sys_sort.sort_name,sys_technology.technology,sys_articles.technology_id
+    FROM sys_articles INNER JOIN sys_collection ON sys_articles.articles_id=sys_collection.articles_id
+                      INNER JOIN sys_customer ON sys_articles.user_id = sys_customer.userID
+                      INNER JOIN sys_sort ON sys_articles.`sort_id` = sys_sort.`sort_id`
+                      INNER JOIN sys_technology ON sys_technology.`id`=sys_articles.`technology_id`
+    WHERE sys_collection.customer_id= #{customerId}
+    ORDER BY sys_articles.articles_id
+    LIMIT #{lit},#{page}
+  </select>
+
+  <update id="updateCount">
+    UPDATE sys_articles
+    SET articles_count=articles_count+1
+    WHERE articles_id=#{articlesId,jdbcType=INTEGER}
+  </update>
+
+  <update id="addlike">
+     update sys_articles
+     <selectKey resultType="java.lang.Integer" keyProperty="likeCount" keyColumn="like_count" order="AFTER">
+          select like_count
+          from sys_articles
+          where articles_id=#{articlesId}
+     </selectKey>
+     set
+     <if test="add==0">
+       like_count=like_count+1,like_userId=CONCAT(like_userId,#{likeUserId})
+     </if>
+     <if test="add==-1">
+      like_count=like_count-1,like_userId=REPLACE(like_userId,#{likeUserId},'')
+     </if>
+     where articles_id=#{articlesId}
+  </update>
+
+  <select id="selectlike" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select like_userId,collect_userId,like_count,collect_count
+    from sys_articles
+    where articles_id=#{articlesId}
+  </select>
+
+  <update id="addcollect" parameterType="java.lang.Integer">
+    update sys_articles
+    set
+    <if test="add==0">
+      collect_count=collect_count+1,collect_userId=CONCAT(collect_userId,#{collectUserId})
+    </if>
+    <if test="add==-1">
+      collect_count=collect_count-1,collect_userId=REPLACE(collect_userId,#{collectUserId},'')
+    </if>
+    where articles_id=#{articlesId}
+  </update>
+
+  <update id="addcomments" parameterType="java.lang.Integer">
+    update sys_articles
+    set articles_count=articles_count+1
+    where articles_id=#{articlesId}
+  </update>
+
+  <update id="upviews" parameterType="java.lang.Integer">
+    update sys_articles
+    set articles_views=#{articlesViews}
+    where articles_id=#{articlesId}
+  </update>
+
+  <select id="selectuserCollect" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT sys_articles.*
+    FROM sys_articles
+    WHERE sys_articles.`articles_id`=#{articlesId}
+  </select>
+</mapper>

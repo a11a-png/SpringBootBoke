@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjg.vueboke.dao.SysCustomerDao">
+  <resultMap id="BaseResultMap" type="com.wjg.vueboke.po.SysCustomer">
+    <id column="userID" jdbcType="INTEGER" property="userid" />
+    <result column="userIP" jdbcType="VARCHAR" property="userip" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_password" jdbcType="VARCHAR" property="userPassword" />
+    <result column="user_email" jdbcType="VARCHAR" property="userEmail" />
+    <result column="user_photo" jdbcType="VARCHAR" property="userPhoto" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="user_birthday" jdbcType="DATE" property="userBirthday" />
+    <result column="user_age" jdbcType="INTEGER" property="userAge" />
+    <result column="user_phone" jdbcType="VARCHAR" property="userPhone" />
+    <result column="user_zsname" jdbcType="VARCHAR" property="userZsname" />
+    <result column="roleID" jdbcType="INTEGER" property="roleID" />
+    <result column="salt" jdbcType="VARCHAR" property="salt" />
+    <result column="message" jdbcType="INTEGER" property="message" />
+    <result column="like_postId" jdbcType="VARCHAR" property="likePostId" />
+    <result column="collect_postId" jdbcType="VARCHAR" property="collectPostId" />
+    <result column="focus_userId" jdbcType="VARCHAR" property="focusUserId" />
+    <result column="focus_myuserId" jdbcType="VARCHAR" property="focusMyuserId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    userID, userIP, user_name, user_password, user_email, user_photo, create_time, user_birthday, 
+    user_age, user_phone, user_zsname,roleID,salt,focus_userId
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    SELECT sys_customer.userID,sys_customer.focus_userId,sys_customer.userIP,sys_customer.user_name,sys_customer.user_password,sys_customer.user_email,sys_customer.user_photo,sys_customer.create_time,sys_customer.user_birthday,
+    sys_customer.user_age,sys_customer.user_phone,sys_customer.user_zsname,sys_customer.roleID,sys_customer.salt,sys_customer.focus_userId,sys_customer.focus_myuserId
+    FROM sys_customer
+    where
+    <if test="userid!=null">
+      userID = #{userid,jdbcType=INTEGER}
+    </if>
+    <if test="userName!=null">
+      user_name = #{userName,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_customer
+    where userID = #{userid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="userID" keyProperty="userid" parameterType="com.wjg.vueboke.po.SysCustomer" useGeneratedKeys="true">
+    insert into sys_customer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+       <if test="userip!=null">
+          userIP ,
+       </if>
+      <if test="userName!=null">
+        user_name ,
+      </if>
+      <if test="userPassword!=null">
+        user_password ,
+      </if>
+      <if test="userEmail!=null">
+        user_email ,
+      </if>
+      <if test="userPhoto!=null">
+        user_photo ,
+      </if>
+      <if test="createTime!=null">
+        create_time ,
+      </if>
+      <if test="userBirthday!=null">
+        user_birthday ,
+      </if>
+      <if test="userAge!=null">
+        user_age ,
+      </if>
+      <if test="userPhone!=null">
+        user_phone ,
+      </if>
+      <if test="userZsname!=null">
+        user_zsname ,
+      </if>
+      <if test="salt!=null">
+        salt ,
+      </if>
+      <if test="roleID!=null">
+        roleID ,
+      </if>
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userip!=null">
+        #{userip,jdbcType=VARCHAR},
+      </if>
+      <if test="userName!=null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword!=null">
+        #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userEmail!=null">
+        #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhoto!=null">
+        #{userPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime!=null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userBirthday!=null">
+        #{userBirthday,jdbcType=DATE},
+      </if>
+      <if test="userAge!=null">
+        #{userAge,jdbcType=INTEGER},
+      </if>
+      <if test="userPhone!=null">
+        #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userZsname!=null">
+        #{userZsname,jdbcType=VARCHAR},
+      </if>
+      <if test="salt!=null">
+        #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="roleID!=null">
+        #{roleID,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.wjg.vueboke.po.SysCustomer">
+    update sys_customer
+    <set>
+      <if test="userip != null">
+        userIP = #{userip,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword != null">
+        user_password = #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userEmail != null">
+        user_email = #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhoto != null">
+        user_photo = #{userPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userBirthday != null">
+        user_birthday = #{userBirthday,jdbcType=DATE},
+      </if>
+      <if test="userAge != null">
+        user_age = #{userAge,jdbcType=INTEGER},
+      </if>
+      <if test="userPhone != null">
+        user_phone = #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userZsname != null">
+        user_zsname = #{userZsname,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null">
+        salt = #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="roleID != null">
+        roleID = #{roleID,jdbcType=INTEGER},
+      </if>
+      <if test="focusUserId != null">
+        <if test="add==0">
+          focus_userId = CONCAT(focus_userId,#{focusUserId})
+        </if>
+        <if test="add==-1">
+          focus_userId = REPLACE(focus_userId,#{focusUserId},'')
+        </if>
+      </if>
+      <if test="focusMyuserId != null">
+        <if test="add==0">
+          focus_myuserId = CONCAT(focus_myuserId,#{focusMyuserId})
+        </if>
+        <if test="add==-1">
+          focus_myuserId = REPLACE(focus_myuserId,#{focusMyuserId},'')
+        </if>
+      </if>
+    </set>
+    where userID = #{userid,jdbcType=INTEGER}
+  </update>
+
+  <select id="selUserMessage" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    SELECT sys_customer.userID,sys_customer.userIP,sys_customer.user_name,sys_customer.user_password,sys_customer.user_email,sys_customer.user_photo,sys_customer.create_time,sys_customer.user_birthday,
+           sys_customer.user_age,sys_customer.user_phone,sys_customer.user_zsname,sys_customer.roleID,sys_customer.salt,COUNT(sys_message.message_id) AS message
+    FROM sys_customer INNER JOIN sys_message ON sys_customer.userID = sys_message.`toUserId`
+    WHERE sys_customer.userID=#{userid} AND
+  </select>
+  
+  <select id="selectcollectAndlike" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    SELECT sys_customer.`collect_postId`
+    FROM sys_customer
+    WHERE sys_customer.`userID`=#{userid,jdbcType=INTEGER}
+  </select>
+</mapper>
